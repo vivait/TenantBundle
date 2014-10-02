@@ -1,0 +1,19 @@
+{
+    "name": "vivait/tenant-bundle",
+    "description": "Tenant Bundle",
+    "authors": [
+        {
+            "name": "Lewis Wright",
+            "email": "lewis@vivait.co.uk"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Vivait\\TenantBundle\\": "src/"
+        }
+    }
+}
