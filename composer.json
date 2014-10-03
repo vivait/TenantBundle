@@ -17,7 +17,8 @@
         "phpunit/phpunit": "~3.7.0",
         "phpspec/phpspec": "~2.0",
         "behat/behat": "~3.0",
-        "behat/symfony2-extension": "~2.0"
+        "behat/symfony2-extension": "~2.0",
+        "vivait/scrutinizer-formatter": "dev-master"
     },
     "autoload": {
         "psr-0": {
