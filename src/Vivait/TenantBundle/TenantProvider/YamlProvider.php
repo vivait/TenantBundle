@@ -1,15 +1,15 @@
 <?php
 
-namespace Vivait\TenantBundle\TenantStrategy;
+namespace Vivait\TenantBundle\TenantProvider;
 
 use Symfony\Component\Yaml\Yaml;
 use Vivait\TenantBundle\Model\Tenant;
-use spec\Vivait\TenantBundle\TenantStrategy\YamlStrategySpec;
+use spec\Vivait\TenantBundle\TenantStrategy\YamlProviderSpec;
 
 /**
- * @see YamlStrategySpec
+ * @see YamlProviderSpec
  */
-final class YamlStrategy implements TenantStrategy
+final class YamlProvider implements TenantProvider
 {
 	/**
 	 * @var string

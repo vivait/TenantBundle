@@ -1,24 +1,24 @@
 <?php
 
-namespace spec\Vivait\TenantBundle\TenantStrategy;
+namespace spec\Vivait\TenantBundle\TenantProvider;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Vivait\TenantBundle\Model\Tenant;
-use Vivait\TenantBundle\TenantStrategy\YamlStrategy;
+use Vivait\TenantBundle\TenantProvider\YamlProvider;
 
 /**
- * @mixin YamlStrategy
+ * @mixin YamlProvider
  */
-class YamlStrategySpec extends ObjectBehavior
+class YamlProviderSpec extends ObjectBehavior
 {
 	function let() {
 		$this->beConstructedWith('fixtures/tenants.yml');
 	}
 
-    function it_is_a_strategy_interface()
+    function it_has_a_provider_interface()
     {
-        $this->shouldHaveType('Vivait\TenantBundle\TenantStrategy\TenantStrategy');
+        $this->shouldHaveType('Vivait\TenantBundle\TenantProvider\TenantProvider');
     }
 
 	function it_provides_a_list_of_tenants()
