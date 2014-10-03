@@ -14,10 +14,13 @@
         "symfony/framework-bundle": "~2.3"
     },
     "require-dev": {
-        "phpspec/phpspec": "~2.0"
+        "phpunit/phpunit": "~3.7.0",
+        "phpspec/phpspec": "~2.0",
+        "behat/behat": "~3.0",
+        "behat/symfony2-extension": "~2.0"
     },
     "autoload": {
-        "psr-4": {
+        "psr-0": {
             "Vivait\\TenantBundle\\": "src/"
         }
     }
