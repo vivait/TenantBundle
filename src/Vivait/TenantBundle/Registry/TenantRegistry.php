@@ -31,7 +31,7 @@ class TenantRegistry {
 	}
 
 	/**
-	 * @param array $tenants
+	 * @param Tenant[] $tenants
 	 * @return $this
 	 */
 	public function addAll(array $tenants) {
@@ -60,7 +60,7 @@ class TenantRegistry {
 
 	/**
 	 * Gets all tenants
-	 * @return Model\Tenant[]
+	 * @return Tenant
 	 */
 	public function get($key) {
 		if (!$this->contains($key)) {
