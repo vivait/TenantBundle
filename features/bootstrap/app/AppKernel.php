@@ -6,7 +6,7 @@ use Symfony\Component\HttpKernel\Kernel;
 class AppKernel extends Kernel
 {
     /**
-     * @return array
+     * @return array<Symfony\Component\HttpKernel\Bundle\Bundle\Bundle>
      */
     public function registerBundles()
     {
