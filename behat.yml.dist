@@ -1,0 +1,14 @@
+default:
+  suites:
+    tenantbundle:
+      contexts:
+        - TenantBundleContext
+        - CommandContext
+
+  extensions:
+    Behat\Symfony2Extension:
+      kernel:
+        env: test
+        debug: true
+        path: features/bootstrap/app/AppKernel.php
+        bootstrap: features/bootstrap/app/bootstrap.php
