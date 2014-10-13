@@ -1,0 +1,14 @@
+parameters:
+  vivait_tenant.registry.class: Vivait\TenantBundle\Registry\TenantRegistry
+  vivait_tenant.command_wrapper.class: Vivait\TenantBundle\EventListener\CommandWrapper
+
+services:
+  vivait_tenant.registry:
+    class: %vivait_tenant.registry.class%
+
+  vivait_tenant.command_wrapper:
+    class: %vivait_tenant.command_wrapper.class%
+    tags:
+      - { name: kernel.event_listener, event: console.command, method: onConsoleCommand }
+    arguments:
+      - @vivait_tenant.registry
