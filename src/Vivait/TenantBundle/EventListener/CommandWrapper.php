@@ -6,10 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\Output;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Vivait\TenantBundle\Registry\TenantRegistry;
 
@@ -77,10 +77,12 @@ class CommandWrapper {
     }
 
     /**
-     * @param $kernel
+     * @param Kernel $kernel
      * @param integer $environment
+     * @param InputInterface $input
+     * @param OutputInterface $output
      */
-    private function performCommand( Kernel $kernel, $environment, Input $input, Output $output ) {
+    private function performCommand( Kernel $kernel, $environment, InputInterface $input, OutputInterface $output ) {
         $kernelClass = get_class( $kernel );
         $clonedKernel = new $kernelClass( $environment, $kernel->isDebug() );
         $application = new Application( $clonedKernel );
@@ -89,11 +91,12 @@ class CommandWrapper {
     }
 
     /**
-     * @param $inputDefinition
-     * @param $command
+     * @param InputDefinition $inputDefinition
+     * @param InputInterface $input
+     * @param Command $command
      * @return ArgvInput
      */
-    private function alterInputDefinition( InputDefinition $inputDefinition, Input $input, Command $command ) {
+    private function alterInputDefinition( InputDefinition $inputDefinition, InputInterface $input, Command $command ) {
         $inputDefinition->addOption(
             new InputOption( 'tenant', null, InputOption::VALUE_OPTIONAL, 'The tenant which you wish to perform the command on, defaults to all tenants', null )
         );

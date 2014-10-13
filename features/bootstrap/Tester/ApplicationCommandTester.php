@@ -2,7 +2,7 @@
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\Input;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
 
 class ApplicationCommandTester
@@ -13,7 +13,7 @@ class ApplicationCommandTester
     private $application;
 
     /**
-     * @var Input
+     * @var InputInterface
      */
     private $input;
 
@@ -42,7 +42,7 @@ class ApplicationCommandTester
 
     /**
      * Gets input
-     * @return Input
+     * @return InputInterface
      */
     public function getInput() {
         return $this->input;
