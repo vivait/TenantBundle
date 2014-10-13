@@ -14,96 +14,96 @@ use Symfony\Component\HttpKernel\Kernel;
 use Vivait\TenantBundle\Registry\TenantRegistry;
 
 class CommandWrapper {
-	/**
-	 * @var TenantRegistry
-	 */
-	private $tenantRegistry;
+    /**
+     * @var TenantRegistry
+     */
+    private $tenantRegistry;
 
-	static $wrapped = false;
+    static $wrapped = false;
 
-	function __construct( $tenantRegistry ) {
-		$this->tenantRegistry = $tenantRegistry;
-	}
+    function __construct( $tenantRegistry ) {
+        $this->tenantRegistry = $tenantRegistry;
+    }
 
-	public function onConsoleCommand(ConsoleCommandEvent $event) {
-		$command = $event->getCommand();
-		$application = $command->getApplication();
-		$inputDefinition = $application->getDefinition();
+    public function onConsoleCommand(ConsoleCommandEvent $event) {
+        $command = $event->getCommand();
+        $application = $command->getApplication();
+        $inputDefinition = $application->getDefinition();
 
-		// It's not a Symfony command, no need to tenant it
-		if (!$application instanceOf Application) {
-			return;
-		}
+        // It's not a Symfony command, no need to tenant it
+        if (!$application instanceOf Application) {
+            return;
+        }
 
-		$kernel = $application->getKernel();
+        $kernel = $application->getKernel();
 
-		$output = $event->getOutput();
-		$input = $event->getInput();
-		$originalInput = clone $input;
+        $output = $event->getOutput();
+        $input = $event->getInput();
+        $originalInput = clone $input;
 
-		$this->alterInputDefinition( $inputDefinition, $input, $command );
+        $this->alterInputDefinition( $inputDefinition, $input, $command );
 
-		$tenant = $input->getOption('tenant');
+        $tenant = $input->getOption('tenant');
 
 
-		if ($tenant !== null && !self::$wrapped) {
-			self::$wrapped = true;
+        if ($tenant !== null && !self::$wrapped) {
+            self::$wrapped = true;
 
-			foreach ($this->tenantRegistry->getAll() as $id => $tenant) {
-				$this->performCommand( $kernel, $id, $originalInput, $output );
-			}
+            foreach ($this->tenantRegistry->getAll() as $id => $tenant) {
+                $this->performCommand( $kernel, $id, $originalInput, $output );
+            }
 
-			self::$wrapped = false;
-		}
-	}
+            self::$wrapped = false;
+        }
+    }
 
-	/**
-	 * Gets tenantRegistry
-	 * @return TenantRegistry
-	 */
-	public function getTenantRegistry() {
-		return $this->tenantRegistry;
-	}
+    /**
+     * Gets tenantRegistry
+     * @return TenantRegistry
+     */
+    public function getTenantRegistry() {
+        return $this->tenantRegistry;
+    }
 
-	/**
-	 * Sets tenantRegistry
-	 * @param TenantRegistry $tenantRegistry
-	 * @return $this
-	 */
-	public function setTenantRegistry( $tenantRegistry ) {
-		$this->tenantRegistry = $tenantRegistry;
+    /**
+     * Sets tenantRegistry
+     * @param TenantRegistry $tenantRegistry
+     * @return $this
+     */
+    public function setTenantRegistry( $tenantRegistry ) {
+        $this->tenantRegistry = $tenantRegistry;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param $kernel
-	 * @param integer $environment
-	 */
-	private function performCommand( Kernel $kernel, $environment, Input $input, Output $output ) {
-		$kernelClass = get_class( $kernel );
-		$clonedKernel = new $kernelClass( $environment, $kernel->isDebug() );
-		$application = new Application( $clonedKernel );
+    /**
+     * @param $kernel
+     * @param integer $environment
+     */
+    private function performCommand( Kernel $kernel, $environment, Input $input, Output $output ) {
+        $kernelClass = get_class( $kernel );
+        $clonedKernel = new $kernelClass( $environment, $kernel->isDebug() );
+        $application = new Application( $clonedKernel );
 
-		$application->doRun( $input, $output );
-	}
+        $application->doRun( $input, $output );
+    }
 
-	/**
-	 * @param $inputDefinition
-	 * @param $command
-	 * @return ArgvInput
-	 */
-	private function alterInputDefinition( InputDefinition $inputDefinition, Input $input, Command $command ) {
-		$inputDefinition->addOption(
-			new InputOption( 'tenant', null, InputOption::VALUE_OPTIONAL, 'The tenant which you wish to perform the command on, defaults to all tenants', null )
-		);
+    /**
+     * @param $inputDefinition
+     * @param $command
+     * @return ArgvInput
+     */
+    private function alterInputDefinition( InputDefinition $inputDefinition, Input $input, Command $command ) {
+        $inputDefinition->addOption(
+            new InputOption( 'tenant', null, InputOption::VALUE_OPTIONAL, 'The tenant which you wish to perform the command on, defaults to all tenants', null )
+        );
 
-		// merge the application's input definition
-		$command->mergeApplicationDefinition();
+        // merge the application's input definition
+        $command->mergeApplicationDefinition();
 
-		// we use the input definition of the command
-		$input->bind( $command->getDefinition() );
+        // we use the input definition of the command
+        $input->bind( $command->getDefinition() );
 
-		return $input;
-	}
-} 
+        return $input;
+    }
+}

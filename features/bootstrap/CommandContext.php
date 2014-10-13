@@ -13,79 +13,79 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class CommandContext implements Context, KernelAwareContext {
-	use KernelDictionary;
+    use KernelDictionary;
 
-	/**
-	 * @var Application
-	 */
-	private $application;
+    /**
+     * @var Application
+     */
+    private $application;
 
-	/**
-	 * @var ApplicationCommandTester
-	 */
-	private $tester;
+    /**
+     * @var ApplicationCommandTester
+     */
+    private $tester;
 
-	/**
-	 * @var int
-	 */
-	private $exitCode;
+    /**
+     * @var int
+     */
+    private $exitCode;
 
-	/**
-	 * @When /^I run the command "([^"]*)"$/
-	 * @param $command
-	 * @param array $parameters
-	 */
-	public function iRunTheCommand( $command, array $parameters = array() ) {
-		$this->application = new Application( $this->getKernel() );
-		$this->application->setAutoExit( false );
+    /**
+     * @When /^I run the command "([^"]*)"$/
+     * @param $command
+     * @param array $parameters
+     */
+    public function iRunTheCommand( $command, array $parameters = array() ) {
+        $this->application = new Application( $this->getKernel() );
+        $this->application->setAutoExit( false );
 
-		$parameters['command'] = $command;
+        $parameters['command'] = $command;
 
-		$this->tester = new ApplicationCommandTester( $this->application );
-		$this->exitCode = $this->tester->execute($parameters);
-	}
+        $this->tester = new ApplicationCommandTester( $this->application );
+        $this->exitCode = $this->tester->execute($parameters);
+    }
 
-	/**
-	 * @Given /^I run the command "([^"]*)" with parameters:$/
-	 * @param $command
-	 * @param PyStringNode $parameterJson
-	 */
-	public function iRunTheCommandWithParameters($command, PyStringNode $parameterJson)
-	{
-		$parameters = json_decode($parameterJson->getRaw(), true);
+    /**
+     * @Given /^I run the command "([^"]*)" with parameters:$/
+     * @param $command
+     * @param PyStringNode $parameterJson
+     */
+    public function iRunTheCommandWithParameters($command, PyStringNode $parameterJson)
+    {
+        $parameters = json_decode($parameterJson->getRaw(), true);
 
-		if (null === $parameters) {
-			throw new \InvalidArgumentException(
-				"PyStringNode could not be converted to json."
-			);
-		}
+        if (null === $parameters) {
+            throw new \InvalidArgumentException(
+                "PyStringNode could not be converted to json."
+            );
+        }
 
-		$this->iRunTheCommand($command, $parameters);
-	}
+        $this->iRunTheCommand($command, $parameters);
+    }
 
-	/**
-	 * @Then /^I should see "([^"]*)" in the command output$/
-	 */
-	public function iShouldSeeInTheCommandOutput($pattern)
-	{
-		\assertContains($pattern, $this->tester->getDisplay());
-	}
+    /**
+     * @Then /^I should see "([^"]*)" in the command output$/
+     */
+    public function iShouldSeeInTheCommandOutput($pattern)
+    {
+        \assertContains($pattern, $this->tester->getDisplay());
+    }
 
-	private function registerCommands()
-	{
-		$container = $this->getContainer();
+    private function registerCommands()
+    {
+        $container = $this->getContainer();
 
-		foreach ($this->getKernel()->getBundles() as $bundle) {
-			if ($bundle instanceof Bundle) {
-				$bundle->registerCommands($this->application);
-			}
-		}
+        foreach ($this->getKernel()->getBundles() as $bundle) {
+            if ($bundle instanceof Bundle) {
+                $bundle->registerCommands($this->application);
+            }
+        }
 
-		if ($container->hasParameter('console.command.ids')) {
-			foreach ($container->getParameter('console.command.ids') as $id) {
-				/* @var $command Command */
-				$command = $container->get($id);
-				$this->application->add($command);
-			}
-		}
-	}}
+        if ($container->hasParameter('console.command.ids')) {
+            foreach ($container->getParameter('console.command.ids') as $id) {
+                /* @var $command Command */
+                $command = $container->get($id);
+                $this->application->add($command);
+            }
+        }
+    }}
