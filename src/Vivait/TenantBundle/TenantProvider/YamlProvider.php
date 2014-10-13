@@ -28,6 +28,10 @@ final class YamlProvider implements TenantProvider
     public function loadTenants() {
         $yaml = Yaml::parse(file_get_contents($this->resource));
 
+        if (!is_array($yaml)) {
+            throw new \RuntimeException('YAML file didn\'t contain an array of tenants');
+        }
+
         $tenants = [];
 
         // Convert them to Tenant objects
