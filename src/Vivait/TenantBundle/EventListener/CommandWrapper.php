@@ -78,7 +78,7 @@ class CommandWrapper {
 
 	/**
 	 * @param $kernel
-	 * @param $environment
+	 * @param integer $environment
 	 */
 	private function performCommand( Kernel $kernel, $environment, Input $input, Output $output ) {
 		$kernelClass = get_class( $kernel );

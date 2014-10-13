@@ -10,9 +10,7 @@ use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Vivait\TenantBundle\Command\CacheClearCommand;
 
 class CommandContext implements Context, KernelAwareContext {
 	use KernelDictionary;
