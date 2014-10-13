@@ -70,22 +70,4 @@ class CommandContext implements Context, KernelAwareContext {
     {
         \assertContains($pattern, $this->tester->getDisplay());
     }
-
-    private function registerCommands()
-    {
-        $container = $this->getContainer();
-
-        foreach ($this->getKernel()->getBundles() as $bundle) {
-            if ($bundle instanceof Bundle) {
-                $bundle->registerCommands($this->application);
-            }
-        }
-
-        if ($container->hasParameter('console.command.ids')) {
-            foreach ($container->getParameter('console.command.ids') as $id) {
-                /* @var $command Command */
-                $command = $container->get($id);
-                $this->application->add($command);
-            }
-        }
-    }}
+}
