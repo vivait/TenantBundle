@@ -95,7 +95,7 @@ class ApplicationCommandTester
             $this->output->setVerbosity($options['verbosity']);
         }
 
-        return $this->statusCode = $this->application->doRun($this->input, $this->output);
+        return $this->application->doRun($this->input, $this->output);
     }
 
     /**
