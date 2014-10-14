@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Vivait\TenantBundle\TenantProvider;
+namespace spec\Vivait\TenantBundle\Provider;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Vivait\TenantBundle\Model\Tenant;
-use Vivait\TenantBundle\TenantProvider\YamlProvider;
+use Vivait\TenantBundle\Provider\YamlProvider;
 
 /**
  * @mixin YamlProvider
@@ -18,7 +18,7 @@ class YamlProviderSpec extends ObjectBehavior
 
     function it_has_a_provider_interface()
     {
-        $this->shouldHaveType('Vivait\TenantBundle\TenantProvider\TenantProvider');
+        $this->shouldHaveType('Vivait\TenantBundle\Provider\TenantProvider');
     }
 
 	function it_provides_a_list_of_tenants()

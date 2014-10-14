@@ -1,6 +1,6 @@
 <?php
 
-namespace Vivait\TenantBundle\TenantProvider;
+namespace Vivait\TenantBundle\Provider;
 
 use Symfony\Component\Yaml\Yaml;
 use Vivait\TenantBundle\Model\Tenant;
