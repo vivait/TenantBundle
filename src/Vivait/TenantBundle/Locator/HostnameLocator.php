@@ -4,6 +4,9 @@ namespace Vivait\TenantBundle\Locator;
 
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @see HostnameLocatorSpec
+ */
 class HostnameLocator {
     private $pattern = '#^(?P<tenant>.+?)\.(.*?)\.#';
     private $request;
@@ -43,5 +46,10 @@ class HostnameLocator {
         $this->pattern = $pattern;
 
         return $this;
+    }
+
+    public static function getTenantFromRequest(Request $request) {
+        $locator = new self($request);
+        return $locator->getTenant();
     }
 }
