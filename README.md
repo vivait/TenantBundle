@@ -66,7 +66,7 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         try {
-            $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+            $loader->load(__DIR__.'/config/config_'. $this->getEnvironment() .'.yml');
         }
         catch (InvalidArgumentException $e) {
             $loader->load(__DIR__.'/config/config_tenant_default.yml');
@@ -76,7 +76,7 @@ class AppKernel extends Kernel
 }
 ```
 
-You will also need to create a ```config_tenant_default.yml``` which can be as simple as the following:
+You will also need to create ```app/config/config_tenant_default.yml``` which can be as simple as the following:
 
 ```
 imports:
