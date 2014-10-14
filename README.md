@@ -13,7 +13,7 @@ Open a command console, enter your project directory and execute the
 following command to download the latest stable version of this bundle:
 
 ```bash
-$ composer require vivait\tenant-bundle "~1"
+$ composer require vivait\tenant-bundle
 ```
 
 This command requires you to have Composer installed globally, as explained
@@ -46,4 +46,39 @@ class AppKernel extends Kernel
 
     // ...
 }
+```
+
+Step 3: Make environment specific configs optional
+-------------------------
+
+To avoid needing a config per tenant, change the following in your AppKernel -
+this will attempt to load a tenant specific config but fallback on to a global config called config_tenant_default.yml
+
+```php
+<?php
+// app/AppKernel.php
+
+// ...
+class AppKernel extends Kernel
+{
+	// ...
+
+    public function registerContainerConfiguration(LoaderInterface $loader)
+    {
+        try {
+            $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+        }
+        catch (InvalidArgumentException $e) {
+            $loader->load(__DIR__.'/config/config_tenant_default.yml');
+        }
+    }
+
+}
+```
+
+You will also need to create a ```config_tenant_default.yml``` which can be as simple as the following:
+
+```
+imports:
+    - { resource: config.yml }
 ```
