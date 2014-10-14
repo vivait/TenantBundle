@@ -44,4 +44,4 @@ class HostnameLocator {
 
         return $this;
     }
-} 
+}

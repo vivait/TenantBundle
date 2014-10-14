@@ -9,8 +9,6 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class CommandContext implements Context, KernelAwareContext {
     use KernelDictionary;
