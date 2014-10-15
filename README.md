@@ -53,7 +53,7 @@ Step 3: Altering your kernel to be tenanted
 
 Because a kernel environment is immutable, we need to decipher the tenant before
 booting the kernel. We have created a tenanted kernel for your AppKernel to extend,
-which acts as a middleware to Symfony's Kernel. When using this middelware, you
+which acts as a middleware to Symfony's Kernel. When using this middleware, you
 will need to implement a couple of methods.
 
 The first abstract method, ```getAllTenants``` is used to return an array of
@@ -79,7 +79,7 @@ use Vivait\TenantBundle\Provider\ConfigProvider;
 use Vivait\TenantBundle\Provider\TenantProvider;
 
 // ...
-class AppKernel extends Vivait\TenantBundle\Kernel\TenantKernel
+class AppKernel extends TenantKernel
 {
 	// ...
 
