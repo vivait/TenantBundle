@@ -4,6 +4,7 @@ namespace Vivait\TenantBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
 
@@ -12,16 +13,20 @@ use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class VivaitTenantExtension extends ConfigurableExtension
+class VivaitTenantExtension extends Extension
 {
     /**
-     * Configures the passed container according to the merged configuration.
+     * Loads a specific configuration.
      *
-     * @param array $mergedConfig
-     * @param ContainerBuilder $container
+     * @param array $config An array of configuration values
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     *
+     * @throws \InvalidArgumentException When provided tag is not defined in this extension
+     *
+     * @api
      */
-    protected function loadInternal( array $mergedConfig, ContainerBuilder $container ) {
-        // TODO: Implement loadInternal() method.
+    public function load( array $config, ContainerBuilder $container )
+    {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
     }
