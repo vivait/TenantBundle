@@ -64,7 +64,8 @@ class TenantRegistry {
     }
 
     /**
-     * Gets all tenants
+     * Get a tenant based on their key
+     * @param string $key The tenant key
      * @return Tenant
      */
     public function get($key) {
