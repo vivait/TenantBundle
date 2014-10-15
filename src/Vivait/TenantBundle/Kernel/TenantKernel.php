@@ -5,10 +5,6 @@ namespace Vivait\TenantBundle\Kernel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\HttpKernel\KernelInterface;
-use Vivait\TenantBundle\Locator\HostnameLocator;
-use Vivait\TenantBundle\Model\Tenant;
-use Vivait\TenantBundle\Provider\TenantProvider;
 use Vivait\TenantBundle\Registry\TenantRegistry;
 
 abstract class TenantKernel extends Kernel {
@@ -38,7 +34,7 @@ abstract class TenantKernel extends Kernel {
      * return $configProvider->loadTenants();
      * ?>
      * </code>
-     * @return Tenant[]
+     * @return \Vivait\TenantBundle\Model\Tenant[]
      */
     protected abstract function getAllTenants();
 

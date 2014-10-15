@@ -2,12 +2,10 @@
 
 namespace Vivait\TenantBundle\Provider;
 
-use Vivait\TenantBundle\Model\Tenant;
-
 interface TenantProvider {
 
     /**
-     * @return Tenant[]
+     * @return \Vivait\TenantBundle\Model\Tenant[]
      */
     public function loadTenants();
 }
