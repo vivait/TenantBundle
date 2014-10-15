@@ -17,4 +17,4 @@ class Bootstrap {
         return $registry;
     }
 
-} 
+}

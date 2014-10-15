@@ -10,5 +10,4 @@ if (!file_exists($file = 'vendor/autoload.php')) {
 
 $loader = require $file;
 
-
 AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
