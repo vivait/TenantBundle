@@ -1,5 +1,7 @@
 <?php
 
+namespace test\Vivait\TenantBundle\Tester;
+
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;

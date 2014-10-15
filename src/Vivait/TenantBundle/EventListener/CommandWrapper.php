@@ -45,7 +45,6 @@ class CommandWrapper {
 
         $tenant = $input->getOption('tenant');
 
-
         if ($tenant !== null && !self::$wrapped) {
             self::$wrapped = true;
 
@@ -84,7 +83,7 @@ class CommandWrapper {
      */
     private function performCommand( Kernel $kernel, $environment, InputInterface $input, OutputInterface $output ) {
         $kernelClass = get_class( $kernel );
-        $clonedKernel = new $kernelClass( $environment, $kernel->isDebug() );
+        $clonedKernel = new $kernelClass( 'tenant_'. $environment, $kernel->isDebug() );
         $application = new Application( $clonedKernel );
 
         $application->doRun( $input, $output );

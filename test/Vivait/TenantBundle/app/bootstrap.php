@@ -1,5 +1,7 @@
 <?php
 
+namespace test\Vivait\TenantBundle\app;
+
 use Doctrine\Common\Annotations\AnnotationRegistry;
 
 if (!file_exists($file = 'vendor/autoload.php')) {
@@ -7,5 +9,6 @@ if (!file_exists($file = 'vendor/autoload.php')) {
 }
 
 $loader = require $file;
+
 
 AnnotationRegistry::registerLoader(array($loader, 'loadClass'));

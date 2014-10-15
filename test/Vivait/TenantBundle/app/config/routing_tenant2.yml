@@ -1,0 +1,3 @@
+vivait_tenantbundle_demo:
+  pattern: /
+  defaults: { _controller: test\Vivait\TenantBundle\Controller\DemoController::tenant2Action }

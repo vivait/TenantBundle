@@ -2,14 +2,21 @@
 
 namespace Vivait\TenantBundle\Registry;
 
+use Vivait\TenantBundle\Locator\TenantLocator;
 use Vivait\TenantBundle\Model;
 use Vivait\TenantBundle\Model\Tenant;
+use Vivait\TenantBundle\Provider\TenantProvider;
 
 class TenantRegistry {
     /**
      * @var Tenant[]
      */
     private $tenants = [];
+
+    /**
+     * @var Tenant
+     */
+    private $current;
 
     /**
      * @param Tenant[] $tenants
@@ -76,5 +83,26 @@ class TenantRegistry {
      */
     public function getAll() {
         return $this->tenants;
+    }
+
+    /**
+     * Gets current
+     * @return Tenant
+     */
+    public function getCurrent()
+    {
+        return $this->current;
+    }
+
+    /**
+     * Sets current
+     * @param Tenant $current
+     * @return $this
+     */
+    public function setCurrent( Tenant $current )
+    {
+        $this->current = $current;
+
+        return $this;
     }
 }

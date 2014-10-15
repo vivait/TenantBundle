@@ -13,7 +13,7 @@ use Vivait\TenantBundle\Provider\YamlProvider;
 class YamlProviderSpec extends ObjectBehavior
 {
 	function let() {
-		$this->beConstructedWith('fixtures/tenants.yml');
+        $this->beConstructedWith('test/fixtures/tenants/tenants.yml');
 	}
 
     function it_has_a_provider_interface()

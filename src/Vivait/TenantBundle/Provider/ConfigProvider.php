@@ -29,7 +29,7 @@ final class ConfigProvider implements TenantProvider
      */
     private $file_pattern;
 
-    public function __construct($path, $file_pattern = '/^(?P<tenant>.+?)\.(.*?)$/', Finder $finder = null)
+    public function __construct($path, $file_pattern = '/^config_tenant_(?P<tenant>.+?)\.(.*?)$/', Finder $finder = null)
     {
         $this->path = $path;
         $this->file_pattern = $file_pattern;

@@ -7,7 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @see HostnameLocatorSpec
  */
-class HostnameLocator {
+class HostnameLocator implements TenantLocator
+{
     private $pattern = '#^(?P<tenant>.+?)\.(.*?)\.#';
     private $request;
 

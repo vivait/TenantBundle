@@ -24,5 +24,10 @@
         "psr-0": {
             "Vivait\\TenantBundle\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "test\\Vivait\\TenantBundle\\": ""
+        }
     }
 }
