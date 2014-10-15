@@ -81,7 +81,7 @@ class ApplicationCommandTester
         // set the command name automatically if the application requires
         // this argument and no command name was passed
         if (!isset($input['command'])) {
-            throw new RuntimeException('No command passed to ApplicationCommandTester');
+            throw new \RuntimeException('No command passed to ApplicationCommandTester');
         }
 
         $this->input = new ArrayInput($input);
