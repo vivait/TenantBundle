@@ -48,37 +48,76 @@ class AppKernel extends Kernel
 }
 ```
 
-Step 3: Make environment specific configs optional
+Step 3: Altering your kernel to be tenanted
 -------------------------
 
-To avoid needing a config per tenant, change the following in your AppKernel -
-this will attempt to load a tenant specific config but fallback on to a global config called config_tenant_default.yml
+Because a kernel environment is immutable, we need to decipher the tenant before
+booting the kernel. We have created a tenanted kernel for your AppKernel to extend,
+which acts as a middleware to Symfony's Kernel. When using this middelware, you
+will need to implement a couple of methods.
+
+The first abstract method, ```getAllTenants``` is used to return an array of
+Tenant objects. A number of providers are provided, although this could also
+implement custom logic, if needed.
+
+The second abstract method, ```getCurrentTenantKey``` is used to locate the current
+tenant, so the kernel can alter the environment based on this. A number of locators
+are provided, although this could also implement custom logic, if needed.
+
+Below is an example of the implementation of both of these, and if you're unsure
+what any of this means, is an advised starting point:
 
 ```php
 <?php
 // app/AppKernel.php
 
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Vivait\TenantBundle\Kernel\TenantKernel;
+use Vivait\TenantBundle\Locator\HostnameLocator;
+use Vivait\TenantBundle\Provider\ConfigProvider;
+use Vivait\TenantBundle\Provider\TenantProvider;
+
 // ...
-class AppKernel extends Kernel
+class AppKernel extends Vivait\TenantBundle\Kernel\TenantKernel
 {
 	// ...
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    /**
+     * Provides an array of all Tenants
+     *
+     * @return Tenant[]
+     */
+    protected function getAllTenants()
     {
-        try {
-            $loader->load(__DIR__.'/config/config_'. $this->getEnvironment() .'.yml');
-        }
-        catch (InvalidArgumentException $e) {
-            $loader->load(__DIR__.'/config/config_tenant_default.yml');
-        }
+       $configProvider = new ConfigProvider( __DIR__ . '/config/' );
+       return $configProvider->loadTenants();
     }
 
+    /**
+     * Provides the current tenant's key
+     * @param Request $request
+     * @return string The current tenant's key
+     */
+    protected function getCurrentTenantKey( Request $request )
+    {
+        return HostnameLocator::getTenantFromRequest( $request );
+    }
 }
 ```
 
-You will also need to create ```app/config/config_tenant_default.yml``` which can be as simple as the following:
+Step 4: Creating environments for each tenant
+-------------------------
+An environment will be automatically created for each tenant by Symfony. However,
+if you choose to use the default ```AppKernel::registerContainerConfiguration```
+method, as provided by Symfony, then you will need to create a new config file for
+each tenant environment. Each tenant environment is prefixed with 'tenant_', so if
+you have a tenant called 'mytenant', then you'd need to create
+'app/config/config_tenant_mytenant.yml'. You can configure this behaviour by
+changing your ```AppKernel::registerContainerConfiguration``` method, but you will
+also need to customise the patterns used in ConfigProvider to match the change in
+config structure.
 
-```
-imports:
-    - { resource: config.yml }
-```
+You could also use an alternative provider to provide a list of
+tenants, for example there is a YamlProvider that retrieves a list of tenants from
+a YAML file.
