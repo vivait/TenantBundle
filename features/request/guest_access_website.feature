@@ -14,3 +14,9 @@ Feature: Guest accesses website
       And I have a tenant "tenant2"
      When I make a request to "http://tenant2.example.org"
      Then I should see "Hello Tenant 2"
+
+  Scenario: An invalid subdomain is visited
+    Given I have a tenant "tenant1"
+      And I have a tenant "tenant2"
+     When I make a request to "http://invalidtenant.example.org"
+     Then I should get a "\Symfony\Component\HttpKernel\Exception\NotFoundHttpException" exception

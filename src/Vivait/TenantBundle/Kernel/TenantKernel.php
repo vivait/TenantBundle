@@ -3,6 +3,7 @@
 namespace Vivait\TenantBundle\Kernel;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Vivait\TenantBundle\Registry\TenantRegistry;
@@ -64,8 +65,13 @@ abstract class TenantKernel extends Kernel {
     ) {
         if (false === $this->booted) {
             // Find and set the current tenant
-            $tenant = $this->getCurrentTenantKey( $request );
-            $this->getTenantRegistry()->setCurrent( $tenant );
+            try {
+                $tenant = $this->getCurrentTenantKey( $request );
+                $this->getTenantRegistry()->setCurrent( $tenant );
+            }
+            catch (\OutOfBoundsException $e) {
+                throw new NotFoundHttpException('Could not find tenant');
+            }
 
             // Change the environment to the tenant's environment
             $this->environment = 'tenant_' . $tenant;

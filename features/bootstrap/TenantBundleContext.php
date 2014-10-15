@@ -11,7 +11,7 @@ class TenantBundleContext implements Context, KernelAwareContext {
     use KernelDictionary;
 
     /**
-     * @var Response
+     * @var Response|Exception
      */
     private $response;
 
@@ -43,9 +43,14 @@ class TenantBundleContext implements Context, KernelAwareContext {
         $request = Request::create($url);
 
         $kernel = new test\Vivait\TenantBundle\app\AppKernel('prod', true);
-        $this->response = $kernel->handle($request);
 
-        $kernel->terminate($request, $this->response);
+        try {
+            $this->response = $kernel->handle($request);
+            $kernel->terminate($request, $this->response);
+        }
+        catch (\Exception $e) {
+            $this->response = $e;
+        }
     }
 
     /**
@@ -53,7 +58,18 @@ class TenantBundleContext implements Context, KernelAwareContext {
      */
     public function iShouldSee( $match )
     {
-        //\assertContains($pattern, $this->tester->getDisplay());
+        if ($this->response instanceOf \Exception) {
+            throw $this->response;
+        }
+
         \assertContains( $match, $this->response->getContent() );
+    }
+
+    /**
+     * @Then /^I should get (?:a|an) "([^"]*)" exception$/
+     */
+    public function iShouldGetException( $match )
+    {
+        \assertInstanceOf( $match, $this->response );
     }
 }
