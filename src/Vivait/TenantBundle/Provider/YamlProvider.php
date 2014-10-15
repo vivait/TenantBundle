@@ -16,15 +16,24 @@ final class YamlProvider implements TenantProvider
      */
     private $resource;
 
+    /**
+     * @param null|string $resource The filename of the YAML containing the tenants
+     */
     public function __construct($resource = null)
     {
         $this->resource = $resource;
     }
 
+    /**
+     * @param null|string $resource The filename of the YAML containing the tenants
+     */
     public function setResource($resource) {
         $this->resource = $resource;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function loadTenants() {
         $yaml = Yaml::parse(file_get_contents($this->resource));
 

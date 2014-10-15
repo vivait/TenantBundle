@@ -18,7 +18,7 @@ class AppKernel extends Kernel
     const CONFIG_PATH = '/config/';
 
     /**
-     * @return array<Symfony\Component\HttpKernel\Bundle\Bundle\Bundle>
+     * @return \Symfony\Component\HttpKernel\Bundle\Bundle[]
      */
     public function registerBundles()
     {

@@ -42,6 +42,9 @@ final class ConfigProvider implements TenantProvider
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function loadTenants() {
         /* @var $files SplFileInfo[] */
         $files = $this->finder

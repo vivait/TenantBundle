@@ -8,6 +8,9 @@ class Tenant {
      */
     private $key;
 
+    /**
+     * @param string $key The unique identifier for the tenant
+     */
     function __construct( $key ) {
         $this->key = $key;
     }
