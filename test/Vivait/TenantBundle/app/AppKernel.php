@@ -6,6 +6,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Vivait\TenantBundle\Kernel\TenantKernel;
 use Vivait\TenantBundle\Locator\HostnameLocator;
+use Vivait\TenantBundle\Model\Tenant;
 use Vivait\TenantBundle\Provider\ConfigProvider;
 use Vivait\TenantBundle\Provider\TenantProvider;
 
@@ -49,7 +50,7 @@ class AppKernel extends TenantKernel
     /**
      * Provides an instance of a tenant provider
      *
-     * @return TenantProvider
+     * @return Tenant[]
      */
     protected function getAllTenants()
     {
