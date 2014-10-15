@@ -4,7 +4,7 @@ parameters:
 
 services:
   vivait_tenant.registry:
-    class: %vivait_tenant.registry.class%
+    synthetic: true
 
   vivait_tenant.command_wrapper:
     class: %vivait_tenant.command_wrapper.class%

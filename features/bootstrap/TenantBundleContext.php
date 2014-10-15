@@ -29,7 +29,10 @@ class TenantBundleContext implements Context, KernelAwareContext {
      */
     public function iHaveATenant( Tenant $tenant ) {
         $registry = $this->getContainer()->get('vivait_tenant.registry');
-        $registry->add($tenant);
+
+        if (!$registry->contains($tenant)) {
+            throw new Exception(sprintf('Tenant "%s" not registered in registry', $tenant->getKey()));
+        }
     }
 
     /**

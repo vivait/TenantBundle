@@ -17,6 +17,9 @@ class HostnameLocator implements TenantLocator
         $this->request = $request;
     }
 
+    /**
+     * @return string Tenant key
+     */
     public function getTenant() {
         // Get the server name
         $host = $this->request->getHost();
@@ -49,6 +52,10 @@ class HostnameLocator implements TenantLocator
         return $this;
     }
 
+    /**
+     * @param Request $request
+     * @return string Tenant key
+     */
     public static function getTenantFromRequest(Request $request) {
         $locator = new self($request);
         return $locator->getTenant();

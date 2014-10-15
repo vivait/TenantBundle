@@ -95,11 +95,15 @@ class TenantRegistry {
 
     /**
      * Sets current
-     * @param Tenant $current
+     * @param Tenant|string $current The current tenant or their key
      * @return $this
      */
-    public function setCurrent( Tenant $current )
+    public function setCurrent( $current )
     {
+        if (!($current instanceOf Tenant)) {
+            $current = $this->get( $current );
+        }
+
         $this->current = $current;
 
         return $this;
