@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Vivait\TenantBundle\Registry\TenantRegistry;
 
 class CommandWrapper {
@@ -76,12 +76,12 @@ class CommandWrapper {
     }
 
     /**
-     * @param Kernel $kernel
+     * @param KernelInterface $kernel
      * @param integer $environment
      * @param InputInterface $input
      * @param OutputInterface $output
      */
-    private function performCommand( Kernel $kernel, $environment, InputInterface $input, OutputInterface $output ) {
+    private function performCommand( KernelInterface $kernel, $environment, InputInterface $input, OutputInterface $output ) {
         $kernelClass = get_class( $kernel );
         $clonedKernel = new $kernelClass( 'tenant_'. $environment, $kernel->isDebug() );
         $application = new Application( $clonedKernel );
