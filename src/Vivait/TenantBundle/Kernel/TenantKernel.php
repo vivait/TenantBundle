@@ -68,13 +68,16 @@ abstract class TenantKernel extends Kernel {
             try {
                 $tenant = $this->getCurrentTenantKey( $request );
                 $this->getTenantRegistry()->setCurrent( $tenant );
+
+                // Change the environment to the tenant's environment
+                $this->environment = 'tenant_' . $tenant;
             }
             catch (\OutOfBoundsException $e) {
                 throw new NotFoundHttpException('Could not find tenant');
             }
-
-            // Change the environment to the tenant's environment
-            $this->environment = 'tenant_' . $tenant;
+            catch (\RuntimeException $e) {
+                // Do nothing
+            }
 
             $this->boot();
         }
