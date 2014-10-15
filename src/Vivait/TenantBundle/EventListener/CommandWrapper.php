@@ -21,7 +21,7 @@ class CommandWrapper {
 
     static $wrapped = false;
 
-    function __construct( $tenantRegistry ) {
+    function __construct( TenantRegistry $tenantRegistry ) {
         $this->tenantRegistry = $tenantRegistry;
     }
 
