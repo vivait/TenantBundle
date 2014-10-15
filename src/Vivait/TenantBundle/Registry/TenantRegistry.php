@@ -2,10 +2,8 @@
 
 namespace Vivait\TenantBundle\Registry;
 
-use Vivait\TenantBundle\Locator\TenantLocator;
 use Vivait\TenantBundle\Model;
 use Vivait\TenantBundle\Model\Tenant;
-use Vivait\TenantBundle\Provider\TenantProvider;
 
 class TenantRegistry {
     /**

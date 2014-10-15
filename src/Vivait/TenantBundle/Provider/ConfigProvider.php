@@ -2,11 +2,8 @@
 
 namespace Vivait\TenantBundle\Provider;
 
-use Symfony\Component\Finder\Expression\Expression;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\Glob;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\Yaml\Yaml;
 use Vivait\TenantBundle\Model\Tenant;
 
 /**
@@ -29,6 +26,9 @@ final class ConfigProvider implements TenantProvider
      */
     private $file_pattern;
 
+    /**
+     * @param string $path
+     */
     public function __construct($path, $file_pattern = '/^config_tenant_(?P<tenant>.+?)\.(.*?)$/', Finder $finder = null)
     {
         $this->path = $path;
