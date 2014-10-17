@@ -1,5 +1,5 @@
 Feature: Guest accesses website
-  As a gust
+  As a guest
   I want to see a specific tenant's website
   In order to perform actions specific to a tenant
 

@@ -9,10 +9,66 @@ class Tenant {
     private $key;
 
     /**
+     * @var
+     */
+    private $name;
+
+    /**
+     * @var array
+     */
+    private $attributes = array();
+
+    /**
      * @param string $key The unique identifier for the tenant
      */
-    function __construct( $key ) {
+    function __construct( $key = null) {
         $this->key = $key;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * @param array $attributes
+     * @return $this
+     */
+    public function setAttributes(array $attributes)
+    {
+        $this->attributes = $attributes;
+        return $this;
+    }
+
+    /**
+     * @param $attribute
+     * @return $this
+     */
+    public function addAttribute($attribute)
+    {
+        $this->attributes[] = $attribute;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
     }
 
     /**
