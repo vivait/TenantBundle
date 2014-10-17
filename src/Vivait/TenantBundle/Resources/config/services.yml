@@ -20,3 +20,9 @@ services:
     arguments: [@vivait_tenant.registry, %vivait.tenant.name%, %vivait.tenant.attributes%]
     tags:
       - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+  vivait_tenant.tenant_extension:
+    class: Vivait\TenantBundle\Twig\TenantExtension
+    arguments: [@vivait_tenant.registry]
+    tags:
+        - { name: twig.extension }
