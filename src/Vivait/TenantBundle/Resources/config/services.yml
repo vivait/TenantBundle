@@ -1,6 +1,8 @@
 parameters:
   vivait_tenant.registry.class: Vivait\TenantBundle\Registry\TenantRegistry
   vivait_tenant.command_wrapper.class: Vivait\TenantBundle\EventListener\CommandWrapper
+  vivait.tenant.name: ~
+  vivait.tenant.attributes: ~
 
 services:
   vivait_tenant.registry:
@@ -12,3 +14,9 @@ services:
       - { name: kernel.event_listener, event: console.command, method: onConsoleCommand }
     arguments:
       - @vivait_tenant.registry
+
+  vivait_tenant.configure_tenant_listener:
+    class: Vivait\TenantBundle\EventListener\ConfigureTenantListener
+    arguments: [@vivait_tenant.registry, %vivait.tenant.name%, %vivait.tenant.attributes%]
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
