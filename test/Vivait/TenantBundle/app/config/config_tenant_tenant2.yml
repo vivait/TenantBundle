@@ -4,3 +4,9 @@ imports:
 framework:
   router:
     resource: "%kernel.root_dir%/config/routing_tenant2.yml"
+
+vivait_tenant:
+  tenant:
+    name: "Tenant 2"
+    attributes:
+      slogan: "We are better"
