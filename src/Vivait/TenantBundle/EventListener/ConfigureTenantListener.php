@@ -5,6 +5,7 @@ namespace Vivait\TenantBundle\EventListener;
 
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Vivait\TenantBundle\Model\Tenant;
 use Vivait\TenantBundle\Registry\TenantRegistry;
 
 class ConfigureTenantListener
@@ -31,9 +32,13 @@ class ConfigureTenantListener
     public function onKernelRequest(GetResponseEvent $event)
     {
         $tenant = $this->registry->getCurrent();
-        $tenant
-            ->setName($this->name)
-            ->setAttributes($this->attributes);
-        $this->registry->setCurrent($tenant);
+
+        if($tenant instanceof Tenant){
+            $tenant
+                ->setName($this->name)
+                ->setAttributes($this->attributes);
+            $this->registry->setCurrent($tenant);
+        }
+
     }
 } 

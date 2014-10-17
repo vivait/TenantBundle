@@ -21,8 +21,12 @@ class Configuration implements ConfigurationInterface{
         $rootNode
             ->children()
                 ->arrayNode('tenant')
+                    ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('name')->end()
+                        ->scalarNode('name')
+                            ->defaultValue('')
+                            ->isRequired()
+                            ->end()
                         ->arrayNode('attributes')
                             ->isRequired()
                             ->useAttributeAsKey('name')
