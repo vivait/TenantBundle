@@ -14,6 +14,18 @@ abstract class TenantKernel extends Kernel {
      */
     private $tenantRegistry;
 
+    /**
+     * @var bool Enable tenanting?
+     */
+    public $enableTenanting;
+
+    public function __construct($environment, $debug)
+    {
+        $this->enableTenanting = (bool)$debug;
+
+        parent::__construct($environment, $debug);
+    }
+
     protected function initializeContainer()
     {
         parent::initializeContainer();
@@ -63,7 +75,7 @@ abstract class TenantKernel extends Kernel {
         $type = HttpKernelInterface::MASTER_REQUEST,
         $catch = true
     ) {
-        if (false === $this->booted) {
+        if (false === $this->booted && $this->enableTenanting) {
             // Find and set the current tenant
             try {
                 $tenant = $this->getCurrentTenantKey( $request );
