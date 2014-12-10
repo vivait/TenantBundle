@@ -46,6 +46,11 @@ final class ConfigProvider implements TenantProvider
      * @inheritDoc
      */
     public function loadTenants() {
+        if (!file_exists($this->path)) {
+            // TODO: Throw an error or log or something
+            return [];
+        }
+        
         /* @var $files SplFileInfo[] */
         $files = $this->finder
             ->files()
