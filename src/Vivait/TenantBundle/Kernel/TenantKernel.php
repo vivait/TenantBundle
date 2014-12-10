@@ -21,7 +21,7 @@ abstract class TenantKernel extends Kernel {
 
     public function __construct($environment, $debug)
     {
-        $this->enableTenanting = (bool)$debug;
+        $this->enableTenanting = !(bool)$debug;
 
         parent::__construct($environment, $debug);
     }
