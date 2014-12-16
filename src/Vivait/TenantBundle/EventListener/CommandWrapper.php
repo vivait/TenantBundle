@@ -11,6 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Vivait\TenantBundle\Kernel\TenantKernel;
 use Vivait\TenantBundle\Registry\TenantRegistry;
 
 class CommandWrapper {
@@ -45,14 +46,25 @@ class CommandWrapper {
 
         $tenant = $input->getOption('tenant');
 
-        if ($tenant !== null && !self::$wrapped) {
-            self::$wrapped = true;
+        if ($tenant) {
+            $returnCode = 1;
 
             foreach ($this->tenantRegistry->getAll() as $id => $tenant) {
-                $this->performCommand( $kernel, $id, $originalInput, $output );
+                $returnCode = $this->performCommand( $kernel, $id, $originalInput, $output );
+
+                if ($returnCode > 0) {
+                    exit ($returnCode);
+                }
             }
 
-            self::$wrapped = false;
+//            $application->
+            if (method_exists($command, 'disableComment')) {
+                /** @noinspection PhpUndefinedMethodInspection */
+                $command->disableCommand();
+            }
+            else {
+                exit ($returnCode);
+            }
         }
     }
 
@@ -82,11 +94,12 @@ class CommandWrapper {
      * @param OutputInterface $output
      */
     private function performCommand( KernelInterface $kernel, $environment, InputInterface $input, OutputInterface $output ) {
-        $kernelClass = get_class( $kernel );
-        $clonedKernel = new $kernelClass( 'tenant_'. $environment, $kernel->isDebug() );
-        $application = new Application( $clonedKernel );
 
-        $application->doRun( $input, $output );
+        exec(PHP_BINARY . $this->prepareArguments($_SERVER['argv'], $environment), $rawOutput, $return);
+
+        $output->writeln($rawOutput);
+
+        return $return;
     }
 
     /**
@@ -97,7 +110,7 @@ class CommandWrapper {
      */
     private function alterInputDefinition( InputDefinition $inputDefinition, InputInterface $input, Command $command ) {
         $inputDefinition->addOption(
-            new InputOption( 'tenant', null, InputOption::VALUE_OPTIONAL, 'The tenant which you wish to perform the command on, defaults to all tenants', null )
+            new InputOption( 'tenant', null, InputOption::VALUE_NONE, 'Perform the command on all tenants?')
         );
 
         // merge the application's input definition
@@ -107,5 +120,19 @@ class CommandWrapper {
         $input->bind( $command->getDefinition() );
 
         return $input;
+    }
+
+    private function prepareArguments($argv, $env) {
+        $string = '';
+
+        foreach ($argv as $argument) {
+            if (strpos($argument, '--tenant') === 0 || strpos($argument, '--env')) {
+                continue;
+            }
+
+            $string .= ' '. escapeshellarg($argument);
+        }
+
+        return $string .' --env=tenant_'. $env;
     }
 }
