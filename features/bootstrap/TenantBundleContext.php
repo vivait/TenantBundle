@@ -62,7 +62,7 @@ class TenantBundleContext implements Context, KernelAwareContext {
             throw $this->response;
         }
 
-        \assertContains( $match, $this->response->getContent() );
+        PHPUnit_Framework_Assert::assertContains( $match, $this->response->getContent() );
     }
 
     /**
@@ -70,6 +70,6 @@ class TenantBundleContext implements Context, KernelAwareContext {
      */
     public function iShouldGetException( $match )
     {
-        \assertInstanceOf( $match, $this->response );
+        PHPUnit_Framework_Assert::assertInstanceOf( $match, $this->response );
     }
 }

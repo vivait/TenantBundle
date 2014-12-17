@@ -10,20 +10,6 @@ use test\Vivait\TenantBundle\Tester\ApplicationCommandTester;
 class CommandContext implements Context, KernelAwareContext {
     use KernelDictionary;
 
-    /**
-     * @var Application
-     */
-    private $application;
-
-    /**
-     * @var ApplicationCommandTester
-     */
-    private $tester;
-
-    /**
-     * @var int
-     */
-    private $exitCode;
     private $commandOutput;
 
     /**
