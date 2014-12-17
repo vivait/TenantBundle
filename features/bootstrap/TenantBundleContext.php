@@ -42,7 +42,7 @@ class TenantBundleContext implements Context, KernelAwareContext {
     {
         $request = Request::create($url);
 
-        $kernel = new test\Vivait\TenantBundle\app\AppKernel('prod', true);
+        $kernel = new test\Vivait\TenantBundle\app\AppKernel('prod', false);
 
         try {
             $this->response = $kernel->handle($request);

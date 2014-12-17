@@ -6,11 +6,6 @@ Feature: Developer clears cache
   Scenario: Cache clear command is ran
     Given I have a tenant "tenant1"
       And I have a tenant "tenant2"
-     When I run the command "cache:clear" with parameters:
-       """
-          {
-             "--tenant": ""
-          }
-       """
+     When I run the command "cache:clear --tenant"
     Then I should see "Clearing the cache for the tenant_tenant1 environment" in the command output
      And I should see "Clearing the cache for the tenant_tenant2 environment" in the command output

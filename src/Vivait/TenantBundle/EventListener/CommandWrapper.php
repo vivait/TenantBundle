@@ -38,6 +38,10 @@ class CommandWrapper {
 
         $kernel = $application->getKernel();
 
+        if (!($kernel instanceOf TenantKernel) || !$kernel->enableTenanting) {
+            return;
+        }
+
         $output = $event->getOutput();
         $input = $event->getInput();
         $originalInput = clone $input;
