@@ -1,5 +1,7 @@
 TenantBundle
 ============
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/vivait/TenantBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/vivait/TenantBundle/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/vivait/TenantBundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/vivait/TenantBundle/build-status/master)
 
 Allows separate Symfony environments per tenant
 
