@@ -126,6 +126,9 @@ class CommandWrapper {
         return $input;
     }
 
+    /**
+     * @param integer $env
+     */
     private function prepareArguments($argv, $env) {
         $string = '';
 

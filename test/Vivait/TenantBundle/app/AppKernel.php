@@ -8,7 +8,6 @@ use Vivait\TenantBundle\Kernel\TenantKernel;
 use Vivait\TenantBundle\Locator\HostnameLocator;
 use Vivait\TenantBundle\Model\Tenant;
 use Vivait\TenantBundle\Provider\ConfigProvider;
-use Vivait\TenantBundle\Provider\TenantProvider;
 
 class AppKernel extends TenantKernel
 {
