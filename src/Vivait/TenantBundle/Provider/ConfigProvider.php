@@ -50,7 +50,7 @@ final class ConfigProvider implements TenantProvider
             // TODO: Throw an error or log or something
             return [];
         }
-        
+
         /* @var $files SplFileInfo[] */
         $files = $this->finder
             ->files()
