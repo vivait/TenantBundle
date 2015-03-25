@@ -123,3 +123,42 @@ config structure.
 You could also use an alternative provider to provide a list of
 tenants, for example there is a YamlProvider that retrieves a list of tenants from
 a YAML file.
+
+# Running commands against tenants
+Since each tenant now runs under a separate environment, when updating your application
+you'll need to run things commands such as cache clear or doctrine migrations against
+each tenant's environment. A special binary has been provided to make this easier and
+is used by simply prefixing your usual command with `tenants`:
+
+```bash
+tenants php app/console cache:clear
+```
+
+This will automatically run the cache clear command against all tenants. 
+
+## Parallel commands & daemons
+If you want to run a command in parallel, for example a daemon command, then you can
+specify this using the `P` option:
+
+```bash
+tenants -P 10 php app/console my:daemon:command
+```
+
+In the example above, this will run the cache clear command for up to 10 tenants in parallel.
+If you specify `-P` as 0 then the binary will automatically set the number of processes to 
+match the number of tenants.
+
+## Specifying specific tenants
+You can specify specific tenants to run commands against using the `-t` option:
+
+```bash
+tenants -t mytenant,anothertenant php app/console cache:clear
+```
+
+## Other options
+You can get a full list of options using -h:
+
+```bash
+tenants -h
+```
+
