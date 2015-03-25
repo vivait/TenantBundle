@@ -115,7 +115,7 @@ if you choose to use the default ```AppKernel::registerContainerConfiguration```
 method, as provided by Symfony, then you will need to create a new config file for
 each tenant environment. Each tenant environment is prefixed with 'tenant_', so if
 you have a tenant called 'mytenant', then you'd need to create
-'app/config/config_tenant_mytenant.yml'. You can configure this behaviour by
+`'app/config/config_tenant_mytenant.yml'`. You can configure this behaviour by
 changing your ```AppKernel::registerContainerConfiguration``` method, but you will
 also need to customise the patterns used in ConfigProvider to match the change in
 config structure.
@@ -128,10 +128,10 @@ a YAML file.
 Since each tenant now runs under a separate environment, when updating your application
 you'll need to run commands such as cache clear or doctrine migrations against
 each tenant's environment. A special binary has been provided to make this easier and
-is used by simply prefixing your usual command with `tenants`:
+is used by simply prefixing your usual command with the `tenant` binary:
 
 ```bash
-tenants php app/console cache:clear
+bin/tenant php app/console cache:clear
 ```
 
 This will automatically run the cache clear command against all tenants. 
@@ -142,7 +142,7 @@ If you want to run a command in parallel, for example a daemon command, then you
 specify this using the `-P` option:
 
 ```bash
-tenants -P 10 php app/console my:daemon:command
+bin/tenant -P 10 php app/console my:daemon:command
 ```
 
 In the example above, this will run the cache clear command for up to 10 tenants in parallel.
@@ -153,13 +153,13 @@ match the number of tenants.
 You can specify specific tenants to run commands against using the `-t` option:
 
 ```bash
-tenants -t mytenant,anothertenant php app/console cache:clear
+bin/tenant -t mytenant,anothertenant php app/console cache:clear
 ```
 
 ## Other options
 You can get a full list of options using -h:
 
 ```bash
-tenants -h
+bin/tenant -h
 ```
 
