@@ -126,7 +126,7 @@ a YAML file.
 
 # Running commands against tenants
 Since each tenant now runs under a separate environment, when updating your application
-you'll need to run things commands such as cache clear or doctrine migrations against
+you'll need to run commands such as cache clear or doctrine migrations against
 each tenant's environment. A special binary has been provided to make this easier and
 is used by simply prefixing your usual command with `tenants`:
 
@@ -135,6 +135,7 @@ tenants php app/console cache:clear
 ```
 
 This will automatically run the cache clear command against all tenants. 
+
 
 ## Parallel commands & daemons
 If you want to run a command in parallel, for example a daemon command, then you can
