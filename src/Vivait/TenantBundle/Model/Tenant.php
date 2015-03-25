@@ -11,7 +11,7 @@ class Tenant {
     /**
      * @param string $key The unique identifier for the tenant
      */
-    function __construct( $key ) {
+    public function __construct( $key ) {
         $this->key = $key;
     }
 

@@ -49,7 +49,7 @@ abstract class TenantKernel extends Kernel {
      * </code>
      * @return \Vivait\TenantBundle\Model\Tenant[]
      */
-    protected abstract function getAllTenants();
+    abstract protected function getAllTenants();
 
     public function getTenantRegistry() {
         if ($this->tenantRegistry === null) {
@@ -68,7 +68,7 @@ abstract class TenantKernel extends Kernel {
      * @param Request $request
      * @return string The current tenant's key
      */
-    protected abstract function getCurrentTenantKey(Request $request);
+    abstract protected function getCurrentTenantKey(Request $request);
 
     public function handle(
         Request $request,
@@ -87,8 +87,9 @@ abstract class TenantKernel extends Kernel {
             catch (\OutOfBoundsException $e) {
                 throw new NotFoundHttpException('Could not find tenant');
             }
+            // Could not match a tenant, use default
+            // TODO: I'm not convinced this is the best behaviour
             catch (\RuntimeException $e) {
-                // Do nothing
             }
 
             $this->boot();

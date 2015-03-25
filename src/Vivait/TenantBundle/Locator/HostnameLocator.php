@@ -12,7 +12,7 @@ class HostnameLocator implements TenantLocator
     private $pattern = '#^(?P<tenant>.+?)\.(.*?)\.#';
     private $request;
 
-    function __construct( Request $request )
+    public function __construct( Request $request )
     {
         $this->request = $request;
     }

@@ -19,7 +19,7 @@ class TenantRegistry {
     /**
      * @param Tenant[] $tenants
      */
-    function __construct( array $tenants = array() ) {
+    public function __construct( array $tenants = array() ) {
         $this->addAll($tenants);
     }
 
