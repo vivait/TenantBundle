@@ -46,7 +46,7 @@ done
 shift $((OPTIND-1))
 
 # No tenants specified, pull them from the kernel
-if [ "$TENANTS" == "" ]
+if [ "$TENANTS" = "" ]
 then
     # Someday this might validate the tenants with something like:
     # comm -12 <(echo "$TENANTS" | tr " ;," "\n") <($BINARY vivait:tenants:list) | xargs -n1 echo
