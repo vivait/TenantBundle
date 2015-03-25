@@ -138,7 +138,7 @@ This will automatically run the cache clear command against all tenants.
 
 ## Parallel commands & daemons
 If you want to run a command in parallel, for example a daemon command, then you can
-specify this using the `P` option:
+specify this using the `-P` option:
 
 ```bash
 tenants -P 10 php app/console my:daemon:command
