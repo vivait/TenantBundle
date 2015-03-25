@@ -1,2 +1,8 @@
 framework:
     secret:          $3cr3t
+
+services:
+    vivait.tenant.command.list:
+        class: test\Vivait\TenantBundle\Command\WaitCommand
+        tags:
+            -  { name: console.command }

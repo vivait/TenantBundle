@@ -7,6 +7,9 @@
             "email": "lewis@vivait.co.uk"
         }
     ],
+    "bin": [
+        "bin/tenant"
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {

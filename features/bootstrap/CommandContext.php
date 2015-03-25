@@ -13,11 +13,13 @@ class CommandContext implements Context, KernelAwareContext {
     private $commandOutput;
 
     /**
-     * @When I run the command :command
+     * @When I run the tenanted command :command
+     * @When I run the tenanted command :command with options :options
      * @param $command
+     * @param $options
      */
-    public function iRunTheCommand( $command ) {
-        exec(PHP_BINARY . ' test/Vivait/TenantBundle/app/console --no-ansi '. $command, $this->commandOutput, $return);
+    public function iRunTheCommand( $command, $options = null ) {
+        exec('bin/tenant '. $options .' '. PHP_BINARY . ' test/Vivait/TenantBundle/app/console --no-ansi '. $command, $this->commandOutput, $return);
 
         PHPUnit_Framework_Assert::assertSame(0, $return, 'Non zero return code received from command');
     }
@@ -28,5 +30,13 @@ class CommandContext implements Context, KernelAwareContext {
     public function iShouldSeeInTheCommandOutput($pattern)
     {
         PHPUnit_Framework_Assert::assertContains($pattern, implode("\n", $this->commandOutput));
+    }
+
+    /**
+     * @Then /^I should not see "([^"]*)" in the command output$/
+     */
+    public function iShouldNotSeeInTheCommandOutput($pattern)
+    {
+        PHPUnit_Framework_Assert::assertNotContains($pattern, implode("\n", $this->commandOutput));
     }
 }

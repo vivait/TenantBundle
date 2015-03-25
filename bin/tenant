@@ -1,0 +1,65 @@
+#!/bin/sh
+
+usage()
+{
+cat << EOF
+usage: $0 options
+
+Run a console command for multiple tenants
+
+OPTIONS:
+   -h      Show this message
+   -t      Manually specify the tenants (comma separated)
+   -P      Number of parallel processes
+   -v      Verbose
+EOF
+}
+
+TENANTS=
+PROCESSES=1
+VERBOSE=
+
+while getopts “ht:P:v” OPTION
+do
+     case $OPTION in
+         h)
+             usage
+             exit 1
+             ;;
+         t)
+             TENANTS=$(echo "$OPTARG" | tr " ;," "\n")
+             ;;
+         P)
+             PROCESSES=$OPTARG
+             ;;
+         v)
+             VERBOSE="-t"
+             ;;
+         ?)
+             usage
+             exit
+             ;;
+     esac
+done
+
+# Shift all processed options away
+shift $((OPTIND-1))
+
+# No tenants specified, pull them from the kernel
+if [[ "$TENANTS" == "" ]]
+then
+    # Someday this might validate the tenants with something like:
+    # comm -12 <(echo "$TENANTS" | tr " ;," "\n") <($BINARY vivait:tenants:list) | xargs -n1 echo
+
+    # Check for `php app/console` vs `app/console`
+    if [[ -f "$2" ]]
+    then
+        BINARY="$1 $2"
+    else
+        BINARY="$1"
+    fi
+
+    TENANTS=$($BINARY vivait:tenants:list)
+fi
+
+echo "$TENANTS" | xargs -P$PROCESSES $VERBOSE -I{} $@ -e=tenant_{} --no-debug

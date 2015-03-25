@@ -6,6 +6,7 @@ use Behat\Symfony2Extension\Context\KernelDictionary;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Vivait\TenantBundle\Model\Tenant;
+use Vivait\TenantBundle\Registry\TenantRegistry;
 
 class TenantBundleContext implements Context, KernelAwareContext {
     use KernelDictionary;
@@ -26,9 +27,10 @@ class TenantBundleContext implements Context, KernelAwareContext {
     /**
      * @When I have a tenant :tenant
      * @param Tenant $tenant
+     * @throws Exception
      */
     public function iHaveATenant( Tenant $tenant ) {
-        $registry = $this->getContainer()->get('vivait_tenant.registry');
+        $registry = $this->getTenantRegistry();
 
         if (!$registry->contains($tenant)) {
             throw new Exception(sprintf('Tenant "%s" not registered in registry', $tenant->getKey()));
@@ -71,5 +73,13 @@ class TenantBundleContext implements Context, KernelAwareContext {
     public function iShouldGetException( $match )
     {
         PHPUnit_Framework_Assert::assertInstanceOf( $match, $this->response );
+    }
+
+    /**
+     * @return TenantRegistry
+     */
+    protected function getTenantRegistry()
+    {
+        return $this->getContainer()->get('vivait_tenant.registry');
     }
 }

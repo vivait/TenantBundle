@@ -51,7 +51,7 @@ abstract class TenantKernel extends Kernel {
      */
     protected abstract function getAllTenants();
 
-    protected function getTenantRegistry() {
+    public function getTenantRegistry() {
         if ($this->tenantRegistry === null) {
             $tenants = $this->getAllTenants();
 
