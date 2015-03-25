@@ -19,7 +19,7 @@ TENANTS=
 PROCESSES=1
 VERBOSE=
 
-while getopts “ht:P:v” OPTION
+while getopts "ht:P:v" OPTION
 do
      case $OPTION in
          h)
@@ -60,6 +60,12 @@ then
     fi
 
     TENANTS=$($BINARY vivait:tenants:list)
+fi
+
+# OS X doesn't support unlimited processes so match the number of tenants
+if [ "$PROCESSES" -eq 0 ]
+then
+    PROCESSES=$(echo "$TENANTS" | wc -w)
 fi
 
 echo "$TENANTS" | xargs -P$PROCESSES $VERBOSE -I{} $@ -e=tenant_{} --no-debug

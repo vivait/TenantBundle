@@ -19,6 +19,13 @@ Feature: Developer clears cache
     When I run the tenanted command "vivait:tenants:wait" with options "-P 3"
     Then I should see "111222" in the command output
 
+  Scenario: Number of processes can be specified as 0
+    Given I have a tenant "tenant1"
+    And I have a tenant "tenant2"
+    And I have a tenant "tenant3"
+    When I run the tenanted command "vivait:tenants:wait" with options "-P 0"
+    Then I should see "111222" in the command output
+
   Scenario: Cache clear is ran for specified tenants
     Given I have a tenant "tenant1"
     And I have a tenant "tenant2"
