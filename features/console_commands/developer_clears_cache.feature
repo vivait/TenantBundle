@@ -34,3 +34,15 @@ Feature: Developer clears cache
     Then I should see "Clearing the cache for the tenant_tenant1 environment" in the command output
     And I should see "Clearing the cache for the tenant_tenant2 environment" in the command output
     And I should not see "Clearing the cache for the tenant_tenant3 environment" in the command output
+
+  Scenario: Ignore to the fallback environment when tenanting enabled
+    Given I have a tenant "tenant1"
+    When I run the tenanted command "cache:clear" with options "-e test"
+    Then I should not see "Clearing the cache for the dev environment" in the command output
+    And I should see "Clearing the cache for the tenant_tenant1 environment" in the command output
+
+  Scenario: Default to the fallback environment when tenanting disabled
+    Given I have a tenant "tenant1"
+    When I run the tenanted command "cache:clear" with options "-e dev"
+    Then I should see "Clearing the cache for the dev environment" in the command output
+    And I should not see "Clearing the cache for the tenant_tenant1 environment" in the command output

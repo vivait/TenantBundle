@@ -25,20 +25,32 @@ class ListTenantsCommand extends ContainerAwareCommand
                 InputOption::VALUE_NONE,
                 'Use a null character as a separator (instead of the newline character).'
             )
+            ->addOption(
+                'force',
+                'f',
+                InputOption::VALUE_NONE,
+                'Force a list of tenants, even if tenanting is disabled for the current environment'
+            )
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $null = $input->getOption('null');
+        $force = $input->getOption('force');
 
-        /** @var TenantRegistry $registry */
-        $registry = $this->getContainer()->get('vivait_tenant.registry');
+        /** @var TenantKernel $kernel */
+        $kernel = $this->getContainer()->get('kernel');
 
-        $separator = $null ? "\0" : "\n";
+        if ($force || $kernel->enableTenanting) {
+            /** @var TenantRegistry $registry */
+            $registry = $this->getContainer()->get('vivait_tenant.registry');
 
-        foreach ($registry->getAll() as $tenant) {
-            $output->write($tenant->getKey() . $separator);
+            $separator = $null ? "\0" : "\n";
+
+            foreach ($registry->getAll() as $tenant) {
+                $output->write($tenant->getKey() . $separator);
+            }
         }
     }
 }

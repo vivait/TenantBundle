@@ -1,11 +1,8 @@
 <?php
 
 use Behat\Behat\Context\Context;
-use Behat\Gherkin\Node\PyStringNode;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use test\Vivait\TenantBundle\Tester\ApplicationCommandTester;
 
 class CommandContext implements Context, KernelAwareContext {
     use KernelDictionary;

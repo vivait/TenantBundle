@@ -12,6 +12,7 @@ OPTIONS:
    -t      Manually specify the tenants (comma separated)
    -P      Number of parallel processes
    -v      Verbose
+   -e      Fallback to this environment if there are no tenants
 EOF
 }
 
@@ -19,7 +20,7 @@ TENANTS=
 PROCESSES=1
 VERBOSE=
 
-while getopts "ht:P:v" OPTION
+while getopts "ht:P:ve:" OPTION
 do
      case $OPTION in
          h)
@@ -34,6 +35,9 @@ do
              ;;
          v)
              VERBOSE="-t"
+             ;;
+         e)
+             ENVIRONMENT="-e $OPTARG"
              ;;
          ?)
              usage
@@ -59,7 +63,12 @@ then
         BINARY="$1"
     fi
 
-    TENANTS=$($BINARY vivait:tenants:list)
+    TENANTS=$($BINARY vivait:tenants:list $ENVIRONMENT)
+
+    if [ "$TENANTS" = "" ] && [ "$ENVIRONMENT" != "" ]
+    then
+        $@ $ENVIRONMENT
+    fi
 fi
 
 # OS X doesn't support unlimited processes so match the number of tenants
