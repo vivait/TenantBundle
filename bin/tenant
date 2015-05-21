@@ -90,3 +90,5 @@ then
 fi
 
 echo "$TENANTS" | xargs -P$PROCESSES $VERBOSE -I{} $@ -e=tenant_{} --no-debug
+
+wait
