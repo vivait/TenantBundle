@@ -1,4 +1,16 @@
-#!/bin/sh
+#!/bin/bash
+set -e
+
+shutdown() {
+    # Get our process group id
+    PGID=$(ps -o pgid= $$ | grep -o [0-9]*)
+
+    # Kill it in a new new process group
+    setsid kill -- -$PGID
+    exit 0
+}
+
+trap "shutdown" EXIT
 
 usage()
 {
