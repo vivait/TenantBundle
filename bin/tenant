@@ -10,7 +10,7 @@ shutdown() {
     exit 0
 }
 
-trap "shutdown" EXIT
+trap "shutdown" SIGINT SIGTERM
 
 usage()
 {
