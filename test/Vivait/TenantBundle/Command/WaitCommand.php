@@ -18,13 +18,14 @@ class WaitCommand extends ContainerAwareCommand
     {
         $this
             ->setName('vivait:tenants:wait')
-            ->setDescription('Waits 20 seconds - use only for debugging')
+            ->setDescription('Waits a specified number of seconds - use only for debugging')
+            ->addArgument('time', InputArgument::OPTIONAL, 'Number of seconds to wait', 2)
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        for ($i = 1; $i <= 2; $i++) {
+        for ($i = 1; $i <= $input->getArgument('time'); $i++) {
             echo $i;
             sleep(1);
         }

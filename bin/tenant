@@ -1,16 +1,21 @@
-#!/bin/bash
-set -e
-
-shutdown() {
-    # Get our process group id
-    PGID=$(ps -o pgid= $$ | grep -o [0-9]*)
-
-    # Kill it in a new new process group
-    setsid kill -- -$PGID
-    exit 0
+#!/bin/sh
+trap_with_arg() {
+    func="$1" ; shift
+    for sig ; do
+        trap "$func $sig" "$sig"
+    done
 }
 
-trap "shutdown" SIGINT SIGTERM
+init_killtree() {
+    local pid=$1 child
+
+    for child in $(pgrep -P $pid); do
+        init_killtree $child
+    done
+    [ $pid -ne $$ ] && kill -$sig $pid 2>/dev/null
+}
+
+trap_with_arg "init_killtree $$" INT TERM
 
 usage()
 {
@@ -79,7 +84,8 @@ then
 
     if [ "$TENANTS" = "" ] && [ "$ENVIRONMENT" != "" ]
     then
-        $@ $ENVIRONMENT
+        $@ $ENVIRONMENT & wait
+        exit $?
     fi
 fi
 
@@ -89,6 +95,4 @@ then
     PROCESSES=$(echo "$TENANTS" | wc -w)
 fi
 
-echo "$TENANTS" | xargs -P$PROCESSES $VERBOSE -I{} $@ -e=tenant_{} --no-debug
-
-wait
+echo "$TENANTS" | xargs -P$PROCESSES $VERBOSE -I{} $@ -e=tenant_{} --no-debug & wait

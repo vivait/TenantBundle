@@ -3,11 +3,15 @@
 use Behat\Behat\Context\Context;
 use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
+use Symfony\Component\Process\Process;
 
 class CommandContext implements Context, KernelAwareContext {
     use KernelDictionary;
 
     private $commandOutput;
+
+    /** @var Process */
+    private $process;
 
     /**
      * @When I run the tenanted command :command
@@ -16,9 +20,22 @@ class CommandContext implements Context, KernelAwareContext {
      * @param $options
      */
     public function iRunTheCommand( $command, $options = null ) {
-        exec('bin/tenant '. $options .' '. PHP_BINARY . ' test/Vivait/TenantBundle/app/console --no-ansi '. $command, $this->commandOutput, $return);
+        $this->process = new Process('bin/tenant '. $options .' '. PHP_BINARY . ' test/Vivait/TenantBundle/app/console --no-ansi '. $command);
+        $this->process->run();
 
-        PHPUnit_Framework_Assert::assertSame(0, $return, 'Non zero return code received from command');
+        PHPUnit_Framework_Assert::assertSame(0, $this->process->getExitCode(), 'Non zero return code received from command');
+    }
+
+    /**
+     * @When I run the tenanted command :command in the background
+     * @When I run the tenanted command :command in the background with options :options
+     * @param $command
+     * @param $options
+     *
+     * This doesn't actually run the command, but prepares it
+     */
+    public function iRunTheCommandInTheBackground( $command, $options = null ) {
+        $this->process = new Process('bin/tenant '. $options .' '. PHP_BINARY . ' test/Vivait/TenantBundle/app/console --no-ansi '. $command);
     }
 
     /**
@@ -26,7 +43,7 @@ class CommandContext implements Context, KernelAwareContext {
      */
     public function iShouldSeeInTheCommandOutput($pattern)
     {
-        PHPUnit_Framework_Assert::assertContains($pattern, implode("\n", $this->commandOutput));
+        PHPUnit_Framework_Assert::assertContains($pattern, $this->process->getOutput());
     }
 
     /**
@@ -34,6 +51,31 @@ class CommandContext implements Context, KernelAwareContext {
      */
     public function iShouldNotSeeInTheCommandOutput($pattern)
     {
-        PHPUnit_Framework_Assert::assertNotContains($pattern, implode("\n", $this->commandOutput));
+        PHPUnit_Framework_Assert::assertNotContains($pattern, $this->process->getOutput());
+    }
+
+    /**
+     * @Then I should be able to cancel the command
+     */
+    public function iShouldBeAbleToCancelTheCommand()
+    {
+        // How many seconds to allow it to stop
+        $tolerance = 2;
+
+        $this->process->run(function($type, $buffer) use ($tolerance) {
+            static $cancelled = false;
+
+            if (!$cancelled) {
+                $this->process->signal(15);
+                $cancelled = time();
+            }
+            else if ((time() - $cancelled) > $tolerance) {
+                throw new \Exception('Process did not cancel in time, still sending output: '. $buffer);
+            }
+        });
+
+        if (!$this->process) {
+            throw new LogicException('No process started');
+        }
     }
 }
