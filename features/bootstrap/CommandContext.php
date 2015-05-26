@@ -35,7 +35,8 @@ class CommandContext implements Context, KernelAwareContext {
      * This doesn't actually run the command, but prepares it
      */
     public function iRunTheCommandInTheBackground( $command, $options = null ) {
-        $this->process = new Process('bin/tenant '. $options .' '. PHP_BINARY . ' test/Vivait/TenantBundle/app/console --no-ansi '. $command);
+        // Exec is needed to make it cancellable: https://github.com/symfony/symfony/issues/5759
+        $this->process = new Process('exec bin/tenant '. $options .' '. PHP_BINARY . ' test/Vivait/TenantBundle/app/console --no-ansi '. $command);
     }
 
     /**
