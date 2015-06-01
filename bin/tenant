@@ -29,13 +29,16 @@ OPTIONS:
    -t      Manually specify the tenants (comma separated)
    -P      Number of parallel processes
    -v      Verbose
-   -e      Fallback to this environment if there are no tenants
+   -e      Environment to run this as (if no tenants, the command
+           will be ran against this environment). The command will
+           attempt to recognise -e or --env from the Symfony command.
 EOF
 }
 
 TENANTS=
 PROCESSES=1
 VERBOSE=
+ENVIRONMENT=
 
 while getopts "ht:P:ve:" OPTION
 do
@@ -66,6 +69,15 @@ done
 # Shift all processed options away
 shift $((OPTIND-1))
 
+# Extract environment from the command
+if [ "$ENVIRONMENT" == "" ] && [[ "$@" =~ (.*)[\ ]\-?\-e(nv)?(=|[\ ])([a-zA-Z0-9]+)(.*) ]]
+then
+    COMMAND="${BASH_REMATCH[1]}${BASH_REMATCH[5]}"
+    ENVIRONMENT="-e ${BASH_REMATCH[4]}"
+else
+    COMMAND="$@"
+fi
+
 # No tenants specified, pull them from the kernel
 if [ "$TENANTS" = "" ]
 then
@@ -84,7 +96,7 @@ then
 
     if [ "$TENANTS" = "" ] && [ "$ENVIRONMENT" != "" ]
     then
-        $@ $ENVIRONMENT & wait
+        $COMMAND $ENVIRONMENT & wait
         exit $?
     fi
 fi
@@ -95,4 +107,4 @@ then
     PROCESSES=$(echo "$TENANTS" | wc -w)
 fi
 
-echo "$TENANTS" | xargs -P$PROCESSES $VERBOSE -I{} $@ -e=tenant_{} --no-debug & wait
+echo "$TENANTS" | xargs -P$PROCESSES $VERBOSE -I{} $COMMAND -e=tenant_{} --no-debug & wait

@@ -20,7 +20,9 @@ class CommandContext implements Context, KernelAwareContext {
      * @param $options
      */
     public function iRunTheCommand( $command, $options = null ) {
-        $this->process = new Process('bin/tenant '. $options .' '. PHP_BINARY . ' test/Vivait/TenantBundle/app/console --no-ansi '. $command);
+        $tenantedCommand = 'bin/tenant ' . $options . ' ' . PHP_BINARY . ' test/Vivait/TenantBundle/app/console --no-ansi ' . $command;
+
+        $this->process = new Process($tenantedCommand);
         $this->process->run();
 
         PHPUnit_Framework_Assert::assertSame(0, $this->process->getExitCode(), 'Non zero return code received from command');
