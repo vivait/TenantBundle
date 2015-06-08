@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 trap_with_arg() {
     func="$1" ; shift
     for sig ; do
