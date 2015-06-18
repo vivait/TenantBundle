@@ -8,7 +8,7 @@ use Symfony\Component\Process\Process;
 class CommandContext implements Context, KernelAwareContext {
     use KernelDictionary;
 
-    private $commandOutput;
+    private $actualCommand;
 
     /** @var Process */
     private $process;
@@ -20,6 +20,7 @@ class CommandContext implements Context, KernelAwareContext {
      * @param $options
      */
     public function iRunTheCommand( $command, $options = null ) {
+        $this->actualCommand = $command;
         $tenantedCommand = 'bin/tenant ' . $options . ' ' . PHP_BINARY . ' test/Vivait/TenantBundle/app/console --no-ansi ' . $command;
 
         $this->process = new Process($tenantedCommand);
@@ -37,6 +38,8 @@ class CommandContext implements Context, KernelAwareContext {
      * This doesn't actually run the command, but prepares it
      */
     public function iRunTheCommandInTheBackground( $command, $options = null ) {
+        $this->actualCommand = $command;
+
         // Exec is needed to make it cancellable: https://github.com/symfony/symfony/issues/5759
         $this->process = new Process('exec bin/tenant '. $options .' '. PHP_BINARY . ' test/Vivait/TenantBundle/app/console --no-ansi '. $command);
     }
@@ -80,5 +83,16 @@ class CommandContext implements Context, KernelAwareContext {
         if (!$this->process) {
             throw new LogicException('No process started');
         }
+    }
+
+    /**
+     * @Then all process should have exited
+     */
+    public function allProcessShouldHaveExited()
+    {
+        $count = trim(shell_exec("ps aux | grep -c '$this->actualCommand'"));
+
+        // We expect atleast 2 matches, one from grep itself and its parent shell
+        PHPUnit_Framework_Assert::assertLessThanOrEqual(2, $count);
     }
 }

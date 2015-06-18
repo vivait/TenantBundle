@@ -107,4 +107,14 @@ then
     PROCESSES=$(echo "$TENANTS" | wc -w)
 fi
 
-echo "$TENANTS" | xargs -P$PROCESSES $VERBOSE -I{} $COMMAND -e=tenant_{} --no-debug & wait
+if hash parallel 2>/dev/null; then
+    # Convert to parallel syntax
+    if [ "$VERBOSE" == "-t" ]
+    then
+        VERBOSE="-v"
+    fi
+
+    parallel --gnu -P$PROCESSES --ungroup --halt 2 $VERBOSE $COMMAND -e=tenant_{} --no-debug ::: $TENANTS & wait
+else
+    echo "$TENANTS" | xargs -P$PROCESSES -n1 $VERBOSE -I{} $COMMAND -e=tenant_{} --no-debug & wait
+fi

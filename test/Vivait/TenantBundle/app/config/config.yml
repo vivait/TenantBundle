@@ -2,7 +2,11 @@ framework:
     secret:          $3cr3t
 
 services:
-    vivait.tenant.command.list:
+    vivait.tenant.command.wait:
         class: test\Vivait\TenantBundle\Command\WaitCommand
+        tags:
+            -  { name: console.command }
+    vivait.tenant.command.crash:
+        class: test\Vivait\TenantBundle\Command\CrashCommand
         tags:
             -  { name: console.command }
