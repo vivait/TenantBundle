@@ -1,5 +1,4 @@
-TenantBundle [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/vivait/TenantBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/vivait/TenantBundle/?branch=master)
-[![Build Status](https://travis-ci.org/vivait/TenantBundle.svg)](https://travis-ci.org/vivait/TenantBundle)
+TenantBundle [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/vivait/TenantBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/vivait/TenantBundle/?branch=master) [![Build Status](https://travis-ci.org/vivait/TenantBundle.svg)](https://travis-ci.org/vivait/TenantBundle)
 ============
 
 Allows separate Symfony environments per tenant
