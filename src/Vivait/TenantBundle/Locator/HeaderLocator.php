@@ -27,11 +27,11 @@ class HeaderLocator implements TenantLocator
      */
     public function getTenant()
     {
-        if (!$this->request->headers->has('tenant')) {
+        if (!$this->request->headers->has($this->tenant_key)) {
             throw new \RuntimeException('Could not locate a tenant in the header');
         }
 
-        return $this->request->headers->get('tenant');
+        return $this->request->headers->get($this->tenant_key);
     }
 
     /**
