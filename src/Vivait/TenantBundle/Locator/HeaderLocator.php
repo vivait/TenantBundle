@@ -14,12 +14,12 @@ class HeaderLocator implements TenantLocator
     /**
      * @var string
      */
-    private $tenant_key;
+    private $headerKey;
 
-    public function __construct(Request $request, $tenant_key)
+    public function __construct(Request $request, $headerKey)
     {
         $this->request = $request;
-        $this->tenant_key = $tenant_key;
+        $this->headerKey = $headerKey;
     }
 
     /**
@@ -27,21 +27,21 @@ class HeaderLocator implements TenantLocator
      */
     public function getTenant()
     {
-        if (!$this->request->headers->has($this->tenant_key)) {
-            throw new \RuntimeException('Could not locate a tenant in the header');
+        if (!$this->request->headers->has($this->headerKey)) {
+            throw new \RuntimeException('Could not locate a tenant header in the request');
         }
 
-        return $this->request->headers->get($this->tenant_key);
+        return $this->request->headers->get($this->headerKey);
     }
 
     /**
      * @param Request $request
-     * @param string $tenant_key
+     * @param string $headerKey
      * @return string Tenant key
      */
-    public static function getTenantFromRequest(Request $request, $tenant_key = 'tenant')
+    public static function getTenantFromRequest(Request $request, $headerKey = 'tenant')
     {
-        $locator = new self($request, $tenant_key);
+        $locator = new self($request, $headerKey);
 
         return $locator->getTenant();
     }
