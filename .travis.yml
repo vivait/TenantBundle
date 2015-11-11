@@ -1,4 +1,5 @@
 language: php
+sudo: false
 
 php:
   - 5.4
@@ -19,13 +20,17 @@ matrix:
 
 before_install:
   - composer selfupdate
-  
+
+addons:
+  apt:
+    packages:
+    - parallel
+
 install:
   - export COMPOSER_ROOT_VERSION=dev-master
   - if [ "$DEPENDENCIES" == "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi;
   - if [ "$DEPENDENCIES" != "low" ]; then composer update; fi;
   - if [ "$DEPENDENCIES" == "low" ]; then composer update --prefer-lowest; fi;
-  - apt-get install -y parallel
 
 before_script:
   - echo "<?php if (PHP_VERSION_ID >= 50400) echo ',@php5.4';" > php_version_tags.php
