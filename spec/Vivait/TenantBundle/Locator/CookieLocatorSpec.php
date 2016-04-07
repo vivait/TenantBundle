@@ -5,7 +5,11 @@ namespace spec\Vivait\TenantBundle\Locator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
+use Vivait\TenantBundle\Locator\CookieLocator;
 
+/**
+ * @mixin CookieLocator
+ */
 class CookieLocatorSpec extends ObjectBehavior
 {
 
