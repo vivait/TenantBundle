@@ -36,6 +36,7 @@ class CookieLocator implements TenantLocator
     }
 
     /**
+     * @throws \RuntimeException
      * @return string
      */
     public function getTenant()
@@ -56,8 +57,11 @@ class CookieLocator implements TenantLocator
      *
      * @return string Tenant key
      */
-    public static function getTenantFromRequest(Request $request, $cookieName = 'tenant', TenantRegistry $tenantRegistry)
-    {
+    public static function getTenantFromRequest(
+        Request $request,
+        $cookieName = 'tenant',
+        TenantRegistry $tenantRegistry
+    ) {
         $locator = new self($request, $cookieName, $tenantRegistry);
 
         return $locator->getTenant();
@@ -70,6 +74,6 @@ class CookieLocator implements TenantLocator
      */
     private function tenantNameIsValid($tenantName)
     {
-        return  $tenantName && $this->tenantRegistry->contains($tenantName) && $tenantName !== 'dev' && $tenantName !== 'test';
+        return $tenantName && $this->tenantRegistry->contains($tenantName) && $tenantName !== 'dev' && $tenantName !== 'test';
     }
 }
