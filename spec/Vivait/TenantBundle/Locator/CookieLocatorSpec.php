@@ -23,48 +23,48 @@ class CookieLocatorSpec extends ObjectBehavior
         $this->getTenant()->shouldReturn('acme_co');
     }
 
-    function it_throws_an_exception_if_no_tenant_cookie_is_found()
+    function it_throws_a_runtime_exception_if_no_tenant_cookie_is_found()
     {
         $request = Request::create('http://dataflow.dev', 'GET');
         $tenantRegistry = new TenantRegistry([new Tenant('acme_co')]);
         $this->beConstructedWith($request, 'tenant', $tenantRegistry);
 
-        $this->shouldThrow('\RuntimeException')->duringGetTenant();
+        $this->shouldThrow(\RuntimeException::class)->duringGetTenant();
     }
 
-    function it_throws_an_exception_if_the_tenant_cookie_has_no_value()
+    function it_throws_a_runtime_exception_if_the_tenant_cookie_has_no_value()
     {
         $request = Request::create('http://dataflow.dev', 'GET', [], ['tenant' => '']);
         $tenantRegistry = new TenantRegistry([new Tenant('acme_co')]);
         $this->beConstructedWith($request, 'tenant', $tenantRegistry);
 
-        $this->shouldThrow('\RuntimeException')->duringGetTenant();
+        $this->shouldThrow(\OutOfBoundsException::class)->duringGetTenant();
     }
 
-    function it_throws_an_exception_if_the_tenant_is_not_in_the_list_of_available_tenants()
+    function it_throws_an_out_of_bounds_exception_if_the_tenant_is_not_in_the_list_of_available_tenants()
     {
         $request = Request::create('http://dataflow.dev', 'GET', [], ['tenant' => 'my_co']);
         $tenantRegistry = new TenantRegistry([new Tenant('acme_co')]);
         $this->beConstructedWith($request, 'tenant', $tenantRegistry);
 
-        $this->shouldThrow('\RuntimeException')->duringGetTenant();
+        $this->shouldThrow(\OutOfBoundsException::class)->duringGetTenant();
     }
 
-    function it_throws_an_exception_if_you_try_to_access_a_development_tenant()
+    function it_throws_an_out_of_bounds_exception_if_you_try_to_access_a_development_tenant()
     {
         $request = Request::create('http://dataflow.dev', 'GET', [], ['tenant' => 'dev']);
         $tenantRegistry = new TenantRegistry([new Tenant('acme_co'), new Tenant('dev')]);
         $this->beConstructedWith($request, 'tenant', $tenantRegistry);
 
-        $this->shouldThrow('\RuntimeException')->duringGetTenant();
+        $this->shouldThrow(\OutOfBoundsException::class)->duringGetTenant();
     }
 
-    function it_throws_an_exception_if_you_try_to_access_a_test_tenant()
+    function it_throws_an_out_of_bounds_runtime_exception_if_you_try_to_access_a_test_tenant()
     {
         $request = Request::create('http://dataflow.dev', 'GET', [], ['tenant' => 'test']);
         $tenantRegistry = new TenantRegistry([new Tenant('acme_co'), new Tenant('test')]);
         $this->beConstructedWith($request, 'tenant', $tenantRegistry);
 
-        $this->shouldThrow('\RuntimeException')->duringGetTenant();
+        $this->shouldThrow(\OutOfBoundsException::class)->duringGetTenant();
     }
 }

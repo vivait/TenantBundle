@@ -83,7 +83,7 @@ class CookieLocator implements TenantLocator
     private function checkTenantName($tenantName)
     {
         // if no cookie, throw runtime so it'll continue as prod
-        if ( ! $tenantName) {
+        if ($tenantName === null) {
             throw new \RuntimeException;
         }
 
