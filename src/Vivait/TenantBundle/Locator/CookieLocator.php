@@ -36,16 +36,13 @@ class CookieLocator implements TenantLocator
     }
 
     /**
-     * @throws \RuntimeException
      * @return string
      */
     public function getTenant()
     {
         $tenantName = $this->request->cookies->get($this->cookieName);
 
-        if ( ! $this->tenantNameIsValid($tenantName)) {
-            throw new \RuntimeException;
-        }
+        $this->checkTenantName($tenantName);
 
         return $tenantName;
     }
@@ -74,6 +71,25 @@ class CookieLocator implements TenantLocator
      */
     private function tenantNameIsValid($tenantName)
     {
-        return $tenantName && $this->tenantRegistry->contains($tenantName) && $tenantName !== 'dev' && $tenantName !== 'test';
+        return $this->tenantRegistry->contains($tenantName) && $tenantName !== 'dev' && $tenantName !== 'test';
+    }
+
+    /**
+     * @throws \RuntimeException
+     * @throws \OutOfBoundsException
+     *
+     * @param $tenantName
+     */
+    private function checkTenantName($tenantName)
+    {
+        // if no cookie, throw runtime so it'll continue as prod
+        if ( ! $tenantName) {
+            throw new \RuntimeException;
+        }
+
+        // if tenant is set and doesn't exist, throw out of bounds
+        if ( ! $this->tenantNameIsValid($tenantName)) {
+            throw new \OutOfBoundsException;
+        }
     }
 }
