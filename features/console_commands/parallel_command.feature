@@ -16,14 +16,13 @@ Feature: Parallel commands
     When I run the tenanted command "vivait:tenants:wait 10" in the background with options "-P 3"
     Then I should be able to cancel the command
 
-  # Temporarily removing due to a travis ci build OS causing issues with this, it's also generally not needed.
-#  Scenario: All processes exit when a child crashes
-#    Given I have a tenant "tenant1"
-#    And I have a tenant "tenant2"
-#    And I have a tenant "tenant3"
-#    When I run the tenanted command "vivait:tenants:crash tenant1 5" with options "-P 3"
-#    Then I should not see "3" in the command output
-#    And all process should have exited
+  Scenario: All processes exit when a child crashes
+    Given I have a tenant "tenant1"
+    And I have a tenant "tenant2"
+    And I have a tenant "tenant3"
+    When I run the tenanted command "vivait:tenants:crash tenant1 5" with options "-P 3"
+    Then I should not see "3" in the command output
+    And all process should have exited
 
   Scenario: Number of processes can be specified as 0
     Given I have a tenant "tenant1"
