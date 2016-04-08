@@ -4,9 +4,6 @@ namespace Vivait\TenantBundle\Locator;
 
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @see HostnameLocatorSpec
- */
 class HeaderLocator implements TenantLocator
 {
     private $request;
