@@ -22,6 +22,7 @@
         "behat/behat": "~3.0",
         "behat/symfony2-extension": "~2.0"
     },
+    "license": "MIT",
     "autoload": {
         "psr-0": {
             "Vivait\\TenantBundle\\": "src/"
