@@ -36,6 +36,6 @@ before_script:
   - echo "<?php if (PHP_VERSION_ID >= 50400) echo ',@php5.4';" > php_version_tags.php
 
 script:
-   - bin/phpspec run --format=pretty
+   - ./vendor/bin/phpspec run --format=pretty
    #- ./vendor/bin/phpunit --testdox
    - ./vendor/bin/behat --format=pretty --tags '~@php-version'`php php_version_tags.php`
