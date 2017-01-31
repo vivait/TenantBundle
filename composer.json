@@ -1,6 +1,8 @@
 {
     "name": "vivait/tenant-bundle",
-    "description": "Tenant Bundle",
+    "description": "Tenant Bundle for Symfony, allows different environments to load based on various locators.",
+    "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Lewis Wright",
@@ -17,12 +19,11 @@
         "symfony/framework-bundle": "~2.3|~3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~3.7.0|~5.4.6",
-        "phpspec/phpspec": "~2.0",
-        "behat/behat": "~3.0",
+        "phpunit/phpunit": "^3.7|^5.4",
+        "phpspec/phpspec": "^2.0",
+        "behat/behat": "^3.0",
         "behat/symfony2-extension": "~2.0"
     },
-    "license": "MIT",
     "autoload": {
         "psr-0": {
             "Vivait\\TenantBundle\\": "src/"
