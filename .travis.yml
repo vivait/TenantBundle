@@ -14,8 +14,6 @@ cache:
 matrix:
   fast_finish: true
   allow_failures:
-    - php: 7.0
-    - php: 7.1
     - php: hhvm
 
 before_install:
@@ -28,9 +26,7 @@ addons:
 
 install:
   - export COMPOSER_ROOT_VERSION=dev-master
-  - if [ "$DEPENDENCIES" == "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi;
-  - if [ "$DEPENDENCIES" != "low" ]; then composer update; fi;
-  - if [ "$DEPENDENCIES" == "low" ]; then composer update --prefer-lowest; fi;
+  - composer update
 
 before_script:
   - echo "<?php if (PHP_VERSION_ID >= 50400) echo ',@php5.4';" > php_version_tags.php
