@@ -114,8 +114,8 @@ if hash parallel 2>/dev/null; then
         VERBOSE="-v"
     fi
 
-    parallel --gnu -P$PROCESSES --ungroup --halt 2 $VERBOSE $COMMAND -e=tenant_{} --no-debug ::: $TENANTS & wait
+    parallel --gnu -P$PROCESSES --ungroup --halt 2 $VERBOSE $COMMAND --env=tenant_{} --no-debug ::: $TENANTS & wait
 else
     >&2 echo "WARNING: No GNU Parallels found, falling back to xargs"
-    echo "$TENANTS" | xargs -P$PROCESSES -n1 $VERBOSE -I{} $COMMAND -e=tenant_{} --no-debug & wait
+    echo "$TENANTS" | xargs -P$PROCESSES -n1 $VERBOSE -I{} $COMMAND --env=tenant_{} --no-debug & wait
 fi
