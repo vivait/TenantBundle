@@ -4,3 +4,4 @@ parameters:
 services:
   vivait_tenant.registry:
     synthetic: true
+    public: true
