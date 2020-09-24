@@ -6,6 +6,5 @@ services:
     synthetic: true
     public: true
 
-Vivait\TenantBundle\Command\ListTenantsCommand:
-    resource: '../../Command/ListTenantsCommand'
-    tags: ['console.command']
+    Vivait\TenantBundle\Command\ListTenantsCommand:
+        tags: ['console.command']
