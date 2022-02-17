@@ -19,9 +19,15 @@ abstract class TenantKernel extends Kernel {
      */
     public $enableTenanting;
 
-    public function __construct($environment, $debug)
+    public function __construct($environment, $debug, $enableTenanting = null)
     {
-        $this->enableTenanting = !$debug;
+        // For backwards compatibility
+        if ($enableTenanting === null) {
+            $this->enableTenanting = !$debug;
+        }
+        else {
+            $this->enableTenanting = $enableTenanting;
+        }
 
         parent::__construct($environment, $debug);
     }
